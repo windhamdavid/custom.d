@@ -19,7 +19,7 @@ gpcm #git push code master
 ```   
   
 ---
-Sync bad-referrer-words.conf with  https://github.com/matomo-org/referrer-spam-blacklist/blob/master/spammers.txt     
+Sync bad-referrer-words.conf - [https://github.com/matomo-org/referrer-spam-blacklist/blob/master/spammers.txt](https://github.com/matomo-org/referrer-spam-blacklist/blob/master/spammers.txt)     
 Sync with existing whitelist-ips.conf & blacklist-ips.conf
 
 ---
@@ -35,8 +35,15 @@ sudo apache2ctl configtest
 sudo service apache2 reload
 ```
 
-#### Notes:
+### Notes:
 re: sync referrer-words:
 - always forget to tap ⌥ to get multiple row carets. ⌘ → to end of line. 
 
-2021/03 - current branch was behind remote. Forgot I had whitelisted Screming Frog in a previous commit on the remote host. Used -f to overwrite.
+**2021/03**
+- current branch was behind remote. Forgot I had whitelisted Screaming Frog in a previous commit on the remote host. Used -f to overwrite.
+
+**2022/02**
+- updated to Version: V3.2022.02.1316
+- sync'd referrers and added some custom referrers and IPs. 
+- rm screaming 🐸  from globalblacklist so I can use it.
+- since the IP blacklist is not really kept up to day, I'm using IPs gathered from several list @ [https://github.com/hslatman/awesome-threat-intelligence](https://github.com/hslatman/awesome-threat-intelligence) 
