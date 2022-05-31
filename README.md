@@ -50,5 +50,5 @@ re: sync referrer-words:
 
 **2022/06**
 - updated to Version: V3.2022.05.1398
-- added IPs and referrers from GoAccess server analytics
-- easy to check IPs @ [https://www.abuseipdb.com](https://www.abuseipdb.com)
+- added IPs and referrers from server logs
+- easy to check IP abuse @ [https://www.abuseipdb.com](https://www.abuseipdb.com)
