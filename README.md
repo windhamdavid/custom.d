@@ -46,4 +46,9 @@ re: sync referrer-words:
 - updated to Version: V3.2022.02.1316
 - sync'd referrers and added some custom referrers and IPs. 
 - rm screaming 🐸  from globalblacklist so I can use it.
-- since the IP blacklist is not really kept up to day, I'm using IPs gathered from several list @ [https://github.com/hslatman/awesome-threat-intelligence](https://github.com/hslatman/awesome-threat-intelligence) 
+- since the IP blacklist is not really kept up to day, I'm using IPs gathered from several list @ [https://github.com/hslatman/awesome-threat-intelligence](https://github.com/hslatman/awesome-threat-intelligence)
+
+**2022/06**
+- updated to Version: V3.2022.05.1398
+- added IPs and referrers from GoAccess server analytics
+- easy to check IPs @ [https://www.abuseipdb.com](https://www.abuseipdb.com)
