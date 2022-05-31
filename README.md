@@ -30,7 +30,7 @@ Sync remote host
 cd /etc/apache2/   
 git clone https://github.com/windhamdavid/custom.d/   
 cd custom.d  
-git pull origin/code master
+sudo git pull origin/code master
 sudo apache2ctl configtest
 sudo service apache2 reload
 ```
@@ -52,3 +52,4 @@ re: sync referrer-words:
 - updated to Version: V3.2022.05.1398
 - added IPs and referrers from server logs
 - easy to check IP abuse @ [https://www.abuseipdb.com](https://www.abuseipdb.com)
+- added sudo command to git pull so that files retain root permissions. see: [https://github.blog/2022-04-12-git-security-vulnerability-announced/](https://github.blog/2022-04-12-git-security-vulnerability-announced/)
