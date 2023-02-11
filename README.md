@@ -20,7 +20,8 @@ gpcm #git push code master
   
 ---
 Sync bad-referrer-words.conf - [https://github.com/matomo-org/referrer-spam-blacklist/blob/master/spammers.txt](https://github.com/matomo-org/referrer-spam-blacklist/blob/master/spammers.txt)     
-Sync with existing whitelist-ips.conf & blacklist-ips.conf
+Sync with existing whitelist-ips.conf & blacklist-ips.conf  
+The same fella keeps a bunch of lists and has an Nginx bot blocker build @ <https://github.com/Ultimate-Hosts-Blacklist>
 
 ---
 
@@ -38,6 +39,9 @@ sudo service apache2 reload
 ### Notes:
 re: sync referrer-words:
 - always forget to tap ⌥ to get multiple row carets. ⌘ → to end of line. 
+
+**23.02.11**
+- whitelisted a new server and watched the logs to block out some bots and other domains that were already hitting the IP before got the domains rolling. 
 
 **2021/03**
 - current branch was behind remote. Forgot I had whitelisted Screaming Frog in a previous commit on the remote host. Used -f to overwrite.
