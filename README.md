@@ -1,12 +1,16 @@
 
 ## Bad Bot Blocker 
-Apache upstream - [https://github.com/mitchellkrogza/apache-ultimate-bad-bot-blocker](https://github.com/mitchellkrogza/apache-ultimate-bad-bot-blocker)  
-Nginx upstream - [https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker](https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker)
 
-- Sync bad-referrer-words.conf - [https://github.com/matomo-org/referrer-spam-blacklist/blob/master/spammers.txt](https://github.com/matomo-org/referrer-spam-blacklist/blob/master/spammers.txt)     
+> An amusing of web traffic are automated bots either trying to send referral spam, looking for vulnerabilities, and other bullshit!
+
+This started off as a fork of a popular bot blocker and has morphed into a general firewall of sorts for my servers. I double check and add IPs and referrers based on my server logs.
+
+- Apache upstream - [apache-ultimate-bad-bot-blocker](https://github.com/mitchellkrogza/apache-ultimate-bad-bot-blocker)  
+- Nginx upstream - [nginx-ultimate-bad-bot-blocker](https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker)
+- Sync bad-referrer-words.conf - [matomo-org/referrer-spam-blacklists](https://github.com/matomo-org/referrer-spam-blacklist/blob/master/spammers.txt)     
 - Sync with existing whitelist-ips.conf & blacklist-ips.conf  
-- The same fella keeps a bunch of lists and has an Nginx bot blocker build @ <https://github.com/Ultimate-Hosts-Blacklist>
 - Check other IPs reported @ <https://www.abuseipdb.com>
+- IP/DNS references @ [awesome-threat-intelligence](https://github.com/hslatman/awesome-threat-intelligence)
 
 #### keep it sync'd with upstream 
 
@@ -49,7 +53,7 @@ sudo service apache2 reload
 ## Notes
 
 **23.03.05**
-- new IPs from logs on Woozie to add
+- new IPs added from logs on Zeke and Woozie
 
 re: sync referrer-words:
 - always forget to tap ⌥ to get multiple row carets. ⌘ → to end of line. 
@@ -64,7 +68,7 @@ re: sync referrer-words:
 - updated to Version: V3.2022.02.1316
 - sync'd referrers and added some custom referrers and IPs. 
 - rm screaming 🐸  from globalblacklist so I can use it.
-- since the IP blacklist is not really kept up to day, I'm using IPs gathered from several list @ [https://github.com/hslatman/awesome-threat-intelligence](https://github.com/hslatman/awesome-threat-intelligence)
+- since the IP blacklist is not really kept up to date, I'm using IPs gathered from several list @ [https://github.com/hslatman/awesome-threat-intelligence](https://github.com/hslatman/awesome-threat-intelligence)
 
 **2022/06**
 - updated to Version: V3.2022.05.1398
