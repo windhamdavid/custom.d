@@ -1,7 +1,7 @@
 
 ## Bad Bot Blocker 
 
-> An amusing of web traffic are automated bots either trying to send referral spam, looking for vulnerabilities, and other bullshit!
+> An amusing of web traffic are automated bots either trying to send referral spam, looking for vulnerabilities, and other nonsense!
 
 This started off as a fork of a popular bot blocker and has morphed into a general firewall of sorts for my servers. I double check and add IPs and referrers based on my server logs.
 
@@ -11,6 +11,43 @@ This started off as a fork of a popular bot blocker and has morphed into a gener
 - Sync with existing whitelist-ips.conf & blacklist-ips.conf  
 - Check other IPs reported @ <https://www.abuseipdb.com>
 - IP/DNS references @ [awesome-threat-intelligence](https://github.com/hslatman/awesome-threat-intelligence)
+
+
+## Init 
+
+custom.d goes in apache & conf.d goes in nginx
+
+```sh
+#add to nginx/apache.conf
+
+sudo vi /etc/apache2/apache.conf
+<Location "/">
+  AuthMerging And
+  Include custom.d/globalblacklist.conf
+</Location>
+sudo systemctl reload apache2
+
+sudo vi /etc/nginx/nginx.conf
+include /etc/nginx/conf.d/*;
+
+sudo vi /etc/nginx/sites-available/default
+server {
+  include /etc/nginx/bots.d/blockbots.conf;
+  include /etc/nginx/bots.d/ddos.conf;
+}
+sudo systemctl reload nginx
+```
+
+Sync remote host
+
+```sh
+cd /etc/apache2/   
+git clone https://github.com/windhamdavid/custom.d/   
+cd custom.d  
+sudo git pull origin/code master
+sudo apache2ctl configtest
+sudo service apache2 reload
+```
 
 #### keep it sync'd with upstream 
 
@@ -25,27 +62,6 @@ git merge upstream/master
 git filter-branch -f --prune-empty --subdirectory-filter Apache_2.4/custom.d master   
 gpom #git push origin master   
 gpcm #git push code master   
-```
-
-add to nginx/apache .conf
-
-```sh
-######## CUSTOM GLOBAL BLACKLIST ##########
-<Location "/">
-  AuthMerging And
-  Include custom.d/globalblacklist.conf
-</Location>
-```
-
-Sync remote host
-
-```sh
-cd /etc/apache2/   
-git clone https://github.com/windhamdavid/custom.d/   
-cd custom.d  
-sudo git pull origin/code master
-sudo apache2ctl configtest
-sudo service apache2 reload
 ```
 
 ---
