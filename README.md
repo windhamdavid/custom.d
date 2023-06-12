@@ -68,6 +68,9 @@ gpcm #git push code master
 
 ## Notes
 
+**23.06.12**
+- new IPs added from logs on Zeke and Woozie
+
 **23.03.05**
 - new IPs added from logs on Zeke and Woozie
 
