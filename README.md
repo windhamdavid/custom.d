@@ -103,6 +103,17 @@ diff /tmp/old.txt /tmp/new.txt
   - `conf.d/*.conf` is included inside `http{}` and before `sites-enabled`, so the maps exist
     by the time a server block references them. `blockbots.conf`/`ddos.conf` go in the server
     block.
+  - Whitelisted the RFC1918 ranges (generic, not my actual subnet — this repo is public).
+    Needed because `whitelist-ips.conf` is included in **both** the `geo $validate_client`
+    and `geo $ratelimited` blocks, and without it `ddos.conf` rate-limits LAN traffic. Behind
+    NAT the whole house arrives as one address, so it reads as a single very busy client.
+  - Verified blocking for the first time: `Bytespider` and `360Spider` → 444, a bad referer
+    → 444, normal request → 200. Note `curl` reports `000` for a 444 (connection closed with
+    no response) — that is a pass, not a failure.
+  - **The map is three-valued, not boolean.** `3` = blocked outright, `2` = allowed but
+    rate-limited (major search engines you want crawling, just not hammering), absent =
+    untouched. `Baiduspider` returning 200 is correct — it is a `2`. Moving a bot from 2 to 3
+    blocks a search engine, so check the class before reclassifying.
 - **26.08.10** - big upstream sync + brought the nginx half up to parity with apache
   - apache upstream V3.2026.08.2688 🕷️ and nginx upstream V4.2026.08.6093 🤖
   - sync'd `bad-referrer-words.conf` from matomo (+255 lines)
