@@ -84,6 +84,25 @@ diff /tmp/old.txt /tmp/new.txt
 
 ## Log 
 
+- **26.08.14** - first time the nginx rules have actually been loaded by a running nginx —
+  wired into cotton in front of Apache. `nginx -t` passed, with three `duplicate network`
+  warnings: `161.118.238.173`, `4.223.73.90`, `185.177.72.56` were in my
+  `bots.d/blacklist-ips.conf` *and* had since been picked up upstream in
+  `globalblacklist.conf`. Since line ~19203 includes my file inside the same
+  `geo $validate_client` block, each landed twice. Removed the three local entries — upstream
+  carries them now. 282 local IPs remain, still almost entirely additive (only those 3 of 285
+  overlapped).
+  - Deploy on nginx is a clone + symlinks, because the includes inside are absolute
+    `/etc/nginx/bots.d/...` and won't resolve from a checkout elsewhere:
+    ```sh
+    sudo git clone https://github.com/windhamdavid/custom.d /etc/nginx/custom.d
+    sudo ln -s /etc/nginx/custom.d/conf.d/bots.d /etc/nginx/bots.d
+    sudo ln -s /etc/nginx/custom.d/conf.d/globalblacklist.conf /etc/nginx/conf.d/
+    sudo ln -s /etc/nginx/custom.d/conf.d/botblocker-nginx-settings.conf /etc/nginx/conf.d/
+    ```
+  - `conf.d/*.conf` is included inside `http{}` and before `sites-enabled`, so the maps exist
+    by the time a server block references them. `blockbots.conf`/`ddos.conf` go in the server
+    block.
 - **26.08.10** - big upstream sync + brought the nginx half up to parity with apache
   - apache upstream V3.2026.08.2688 🕷️ and nginx upstream V4.2026.08.6093 🤖
   - sync'd `bad-referrer-words.conf` from matomo (+255 lines)
