@@ -84,6 +84,41 @@ diff /tmp/old.txt /tmp/new.txt
 
 ## Log 
 
+- **26.09.10** - blocked `meta-externalagent` and `Lightpanda` on both stacks
+  - Meta's AI crawler walked `davidwindham.com/code/` (gogs) ~745,000 times in 4.5 days, served
+    HTTP 200 every time — 2.4M requests hit `/code/` in that window and only 392 got a 403.
+    It was driving gogs' commit-author avatar lookups, which had grown `gorm.log` to 854MB.
+  - **`bad_bot` alone does not block anything whose UA contains a whitelisted string.**
+    `globalblacklist.conf:39` whitelists `developers.facebook.com` as `good_bot`, and
+    meta-externalagent puts exactly that URL in its own UA
+    (`+https://developers.facebook.com/docs/sharing/webmasters/crawler`). The blocker ends in
+    `<RequireAny>` whose last clause is `Require env good_bot` (`:8212`), and RequireAny grants
+    on *any* match — so `good_bot` overrides `bad_bot` outright. Adding the bad_bot line and
+    stopping there looks correct and does nothing. Verified with httpd + a real request: 200.
+    The fix is the second line, `!good_bot`, which unsets it. **Do not delete it as redundant.**
+  - **The same trap already defeats upstream's own `FacebookBot` rule** at `:238`. Measured:
+    `FacebookBot/1.0 (+https://developers.facebook.com/...)` → **200**, while a bare
+    `FacebookBot/1.0` → 403. Every Facebook-family bot that sends its documentation URL is
+    whitelisted by line 39 regardless of what else the blocker says. Left as-is for now — the
+    whitelist is upstream's and narrowing it is a bigger decision than this change.
+  - **nginx needed no equivalent override.** Its `map` takes the *first* matching regex, and
+    `bots.d/blacklist-user-agents.conf` is included at `conf.d/globalblacklist.conf:143`,
+    ahead of the `developers.facebook.com` whitelist at `:894`. Opposite precedence to apache,
+    same outcome — but it is the include *order* doing the work, so keep that include first.
+  - Verified both stacks by running them locally and issuing real requests, not just `-t`:
+    apache — ordinary browser 200, Bytespider 403 (control), meta-externalagent 403,
+    Lightpanda 403, facebookexternalhit 200, Googlebot 200. nginx — same set, blocked ones
+    returning `000` (that is `444`, connection closed; a pass, per the 26.08.14 note).
+  - `facebookexternalhit` is deliberately NOT blocked on either side — it does link-preview
+    unfurls for Facebook/Instagram/WhatsApp. Meta splits it from the AI-training crawler, and
+    the `Include` is global at woozie's `apache2.conf:230`, so blocking it would kill previews
+    for every site on the box, not just gogs.
+  - Lightpanda is a headless browser library, so its UA is only whatever the operator left in
+    place. Listed for the ~27,000 served requests, not because the block is durable.
+  - Validation recipe note: pointing `httpd -d` at `woozie/` no longer resolves
+    `Include custom.d/...` — custom.d moved to the repo root on 26.08.14. Point `ServerRoot` at
+    the repo root, and wrap the include in `<Location "/">` + `AuthMerging And` to match
+    `apache2.conf:227`, or `<RequireAny>` fails with "not allowed here".
 - **26.08.14** - first time the nginx rules have actually been loaded by a running nginx —
   wired into cotton in front of Apache. `nginx -t` passed, with three `duplicate network`
   warnings: `161.118.238.173`, `4.223.73.90`, `185.177.72.56` were in my
